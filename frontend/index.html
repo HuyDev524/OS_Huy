@@ -28,8 +28,8 @@
 
     <script>
         // Vì index.html ở /frontend/ và api.php ở /sbackend/
-        const API = '../sbackend/api.php';
-
+// Sửa dòng này trong file frontend/index.html
+const API = '../backend/api.php';
         async function load() {
             const r = await fetch(API);
             const data = await r.json();

@@ -1,6 +1,6 @@
 <?php
-$host = 'sql301.infinityfree.com';
-$dbname = 'if0_40701573_db'; 
+$host = 'sql301.infinityfree.com'; // Kiểm tra lại mã server trong vPanel
+$dbname = 'if0_40701573_db';      // Tên DB bạn đã tạo
 $username = 'if0_40701573';
 $password = 'lth050204'; 
 

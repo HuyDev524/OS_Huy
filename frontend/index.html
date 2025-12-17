@@ -5,45 +5,71 @@
     <title>Quản Lý Sinh Viên</title>
     <style>
         body { font-family: Arial, sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-        .container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
-        input { width: calc(50% - 12px); padding: 10px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
-        button { width: calc(100% - 10px); padding: 10px; margin: 5px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .card { background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 500px; }
+        h3 { margin-top: 0; }
+        input { width: 95%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { width: 100%; padding: 12px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0056b3; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border-bottom: 1px solid #ddd; padding: 10px; text-align: left; }
-        th { background: #007bff; color: #fff; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
+        th { background: #f8f9fa; }
     </style>
 </head>
 <body>
-<div class="container">
-    <h2 style="text-align:center">Danh Sách Sinh Viên</h2>
-    <input type="text" id="name" placeholder="Họ tên">
-    <input type="email" id="email" placeholder="Email">
-    <input type="text" id="phone" placeholder="Số điện thoại">
-    <input type="text" id="major" placeholder="Chuyên ngành">
-    <button onclick="addStudent()">THÊM MỚI</button>
-    <table id="stTable">
-        <thead><tr><th>Tên</th><th>Ngành</th></tr></thead>
-        <tbody></tbody>
-    </table>
-</div>
-<script>
-    const API = '../backend/api.php';
-    async function load() {
-        const r = await fetch(API);
-        const data = await r.json();
-        document.querySelector('#stTable tbody').innerHTML = data.map(s => `<tr><td>${s.name}</td><td>${s.major}</td></tr>`).join('');
-    }
-    async function addStudent() {
-        const payload = {
-            name: document.getElementById('name').value,
-            email: document.getElementById('email').value,
-            phone: document.getElementById('phone').value,
-            major: document.getElementById('major').value
-        };
-        await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
+    <div class="card">
+        <h3>Thêm Sinh Viên</h3>
+        <input type="text" id="name" placeholder="Họ tên">
+        <input type="text" id="email" placeholder="MSSV">
+        <input type="text" id="phone" placeholder="Lớp">
+        <button onclick="addStudent()">Lưu</button>
+
+        <table id="stTable">
+            <thead>
+                <tr><th>Tên</th><th>MSSV</th><th>Lớp</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <script>
+        const API = '../backend/api.php';
+
+        async function load() {
+            try {
+                const r = await fetch(API);
+                const data = await r.json();
+                const tbody = document.querySelector('#stTable tbody');
+                tbody.innerHTML = data.map(s => `
+                    <tr>
+                        <td>${s.name}</td>
+                        <td>${s.email}</td>
+                        <td>${s.phone}</td>
+                    </tr>
+                `).join('');
+            } catch (e) { console.error("Lỗi tải dữ liệu", e); }
+        }
+
+        async function addStudent() {
+            const payload = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value
+            };
+
+            if(!payload.name) return alert("Vui lòng nhập tên!");
+
+            await fetch(API, { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(payload) 
+            });
+
+            // Xóa trắng ô nhập
+            document.querySelectorAll('input').forEach(i => i.value = '');
+            load();
+        }
+
         load();
-    }
-    load();
-</script>
+    </script>
 </body>
 </html>

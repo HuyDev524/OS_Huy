@@ -10,8 +10,8 @@ $sql = "CREATE TABLE IF NOT EXISTS students (
 )";
 try {
     $pdo->exec($sql);
-    echo "<h1>Thành công!</h1>Bảng 'students' đã sẵn sàng.";
+    echo "<h1>Thành công!</h1>Bảng 'students' đã được tạo.";
 } catch (PDOException $e) {
-    echo "Lỗi tạo bảng: " . $e->getMessage();
+    echo "Lỗi: " . $e->getMessage();
 }
 ?>

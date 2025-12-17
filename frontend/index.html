@@ -4,56 +4,46 @@
     <meta charset="UTF-8">
     <title>Quản Lý Sinh Viên</title>
     <style>
-        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; display: flex; justify-content: center; }
-        .card { background: white; padding: 20px; border-radius: 8px; width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
-        input { padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
-        button { grid-column: span 2; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        body { font-family: Arial, sans-serif; background: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
+        .container { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); width: 100%; max-width: 600px; }
+        input { width: calc(50% - 12px); padding: 10px; margin: 5px; border: 1px solid #ddd; border-radius: 4px; }
+        button { width: calc(100% - 10px); padding: 10px; margin: 5px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
-        th { background: #007bff; color: white; }
+        th, td { border-bottom: 1px solid #ddd; padding: 10px; text-align: left; }
+        th { background: #007bff; color: #fff; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h2 style="text-align:center">Quản Lý Sinh Viên</h2>
-        <div class="grid">
-            <input type="text" id="name" placeholder="Họ tên">
-            <input type="email" id="email" placeholder="Email">
-            <input type="text" id="phone" placeholder="Số điện thoại">
-            <input type="text" id="major" placeholder="Chuyên ngành">
-            <button onclick="addStudent()">LƯU SINH VIÊN</button>
-        </div>
-        <table id="stTable">
-            <thead><tr><th>Tên</th><th>Email</th><th>SĐT</th><th>Ngành</th></tr></thead>
-            <tbody></tbody>
-        </table>
-    </div>
-
-    <script>
-        const API = '../backend/api.php'; // Đường dẫn tương đối từ /frontend/ sang /backend/
-
-        async function load() {
-            const r = await fetch(API);
-            const data = await r.json();
-            document.querySelector('#stTable tbody').innerHTML = data.map(s => 
-                `<tr><td>${s.name}</td><td>${s.email}</td><td>${s.phone}</td><td>${s.major}</td></tr>`
-            ).join('');
-        }
-
-        async function addStudent() {
-            const body = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                major: document.getElementById('major').value
-            };
-            if(!body.name) return alert("Nhập tên sinh viên!");
-            await fetch(API, { method: 'POST', body: JSON.stringify(body) });
-            document.querySelectorAll('input').forEach(i => i.value = '');
-            load();
-        }
+<div class="container">
+    <h2 style="text-align:center">Danh Sách Sinh Viên</h2>
+    <input type="text" id="name" placeholder="Họ tên">
+    <input type="email" id="email" placeholder="Email">
+    <input type="text" id="phone" placeholder="Số điện thoại">
+    <input type="text" id="major" placeholder="Chuyên ngành">
+    <button onclick="addStudent()">THÊM MỚI</button>
+    <table id="stTable">
+        <thead><tr><th>Tên</th><th>Ngành</th></tr></thead>
+        <tbody></tbody>
+    </table>
+</div>
+<script>
+    const API = '../backend/api.php';
+    async function load() {
+        const r = await fetch(API);
+        const data = await r.json();
+        document.querySelector('#stTable tbody').innerHTML = data.map(s => `<tr><td>${s.name}</td><td>${s.major}</td></tr>`).join('');
+    }
+    async function addStudent() {
+        const payload = {
+            name: document.getElementById('name').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            major: document.getElementById('major').value
+        };
+        await fetch(API, { method: 'POST', body: JSON.stringify(payload) });
         load();
-    </script>
+    }
+    load();
+</script>
 </body>
 </html>

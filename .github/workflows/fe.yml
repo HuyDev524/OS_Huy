@@ -1,14 +1,21 @@
 name: Deploy Frontend
+
 on:
   push:
+    branches:
+      - main
     paths:
       - 'frontend/**' # Chỉ chạy khi có thay đổi trong thư mục frontend
+
 jobs:
   deploy-fe:
+    name: 🎨 Deploy Frontend to InfinityFree
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: 📂 Sync Frontend
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v3
+
+      - name: 📂 Sync Frontend files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: ftpupload.net

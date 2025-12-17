@@ -2,7 +2,7 @@
 $host = 'sql301.infinityfree.com';
 $dbname = 'if0_40701573_XXX'; // THAY 'XXX' THÀNH TÊN DATABASE BẠN ĐÃ TẠO
 $username = 'if0_40701573';
-$password = '1th050204'; 
+$password = 'lth050204'; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);

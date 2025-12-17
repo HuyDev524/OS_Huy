@@ -1,50 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <title>Quản Lý Sinh Viên</title>
     <style>
-        body { font-family: sans-serif; background: #eee; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; width: 500px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        input { width: 95%; padding: 8px; margin-bottom: 10px; border: 1px solid #ddd; }
-        button { width: 100%; padding: 10px; background: #007bff; color: white; border: none; cursor: pointer; }
+        body { font-family: sans-serif; background: #f4f4f9; padding: 20px; display: flex; justify-content: center; }
+        .card { background: white; padding: 20px; border-radius: 8px; width: 600px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+        input { padding: 10px; border: 1px solid #ddd; border-radius: 4px; }
+        button { grid-column: span 2; padding: 10px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
         table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th, td { border: 1px solid #eee; padding: 10px; text-align: left; }
+        th { background: #007bff; color: white; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h3>Thêm Sinh Viên</h3>
-        <input type="text" id="hoten" placeholder="Họ tên">
-        <input type="text" id="mssv" placeholder="MSSV">
-        <input type="text" id="lop" placeholder="Lớp">
-        <button onclick="addStudent()">Lưu</button>
-
-        <table id="list">
-            <thead><tr><th>Tên</th><th>MSSV</th><th>Lớp</th></tr></thead>
+        <h2 style="text-align:center">Quản Lý Sinh Viên</h2>
+        <div class="grid">
+            <input type="text" id="name" placeholder="Họ tên">
+            <input type="email" id="email" placeholder="Email">
+            <input type="text" id="phone" placeholder="Số điện thoại">
+            <input type="text" id="major" placeholder="Chuyên ngành">
+            <button onclick="addStudent()">LƯU SINH VIÊN</button>
+        </div>
+        <table id="stTable">
+            <thead><tr><th>Tên</th><th>Email</th><th>SĐT</th><th>Ngành</th></tr></thead>
             <tbody></tbody>
         </table>
     </div>
 
     <script>
-        // Vì index.html ở /frontend/ và api.php ở /sbackend/
-// Sửa dòng này trong file frontend/index.html
-const API = '../backend/api.php';
+        const API = '../backend/api.php'; // Đường dẫn tương đối từ /frontend/ sang /backend/
+
         async function load() {
             const r = await fetch(API);
             const data = await r.json();
-            document.querySelector('#list tbody').innerHTML = data.map(s => 
-                `<tr><td>${s.hoten}</td><td>${s.mssv}</td><td>${s.lop}</td></tr>`
+            document.querySelector('#stTable tbody').innerHTML = data.map(s => 
+                `<tr><td>${s.name}</td><td>${s.email}</td><td>${s.phone}</td><td>${s.major}</td></tr>`
             ).join('');
         }
 
         async function addStudent() {
             const body = {
-                hoten: document.getElementById('hoten').value,
-                mssv: document.getElementById('mssv').value,
-                lop: document.getElementById('lop').value
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                major: document.getElementById('major').value
             };
+            if(!body.name) return alert("Nhập tên sinh viên!");
             await fetch(API, { method: 'POST', body: JSON.stringify(body) });
+            document.querySelectorAll('input').forEach(i => i.value = '');
             load();
         }
         load();

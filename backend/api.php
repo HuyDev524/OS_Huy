@@ -5,13 +5,11 @@ header('Access-Control-Allow-Origin: *');
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-// Lấy danh sách sinh viên
 if ($method == 'GET') {
     $stmt = $pdo->query("SELECT * FROM students ORDER BY id DESC");
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 } 
 
-// Thêm sinh viên mới
 if ($method == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     if(!empty($data['name'])) {

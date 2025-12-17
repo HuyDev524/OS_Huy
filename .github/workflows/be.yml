@@ -2,7 +2,7 @@ name: Deploy Backend
 on:
   push:
     paths:
-      - 'backend/**' # Chỉ chạy khi có thay đổi trong thư mục backend
+      - 'backend/**' 
 jobs:
   deploy-be:
     runs-on: ubuntu-latest

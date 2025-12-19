@@ -22,4 +22,4 @@ jobs:
           username: if0_40701573
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./frontend/
-          server-dir: /htdocs/ # Đảm bảo file index.html nằm đúng htdocs/frontend/
+          server-dir: /htdocs/frontend/ # Đảm bảo file index.html nằm đúng htdocs/frontend/

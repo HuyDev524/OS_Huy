@@ -1,6 +1,6 @@
 <?php
 $host = 'sql301.infinityfree.com';
-$dbname = 'if0_40701573_student_db'; // <-- BẮT BUỘC: Thay XXX thành tên DB bạn đã tạo1
+$dbname = 'if0_40701573_student_db'; // <-- BẮT BUỘC: Thay XXX thành tên DB bạn đã tạo2
 $username = 'if0_40701573';
 $password = 'lth050204';
 

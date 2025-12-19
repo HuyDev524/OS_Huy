@@ -14,7 +14,7 @@ if ($method == 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
     if(!empty($data['name'])) {
         $stmt = $pdo->prepare("INSERT INTO students (name, email, phone, major) VALUES (?, ?, ?, ?)");
-        // major mặc định là lớp nếu bạn không muốn nhập thêm ô mới
+        // major mặc định là lớp nếu bạn không muốn nhập thêm ô mới1
         $stmt->execute([$data['name'], $data['email'], $data['phone'], $data['phone']]); 
         echo json_encode(['status' => 'success']);
     }
